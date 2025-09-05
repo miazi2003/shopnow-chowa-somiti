@@ -2,7 +2,7 @@ import React from 'react';
 import logo2 from "../../assets/logo.png"
 const Navbar = () => {
     return (
-      <div className="navbar bg-[#3f2570] shadow-sm text-white">
+      <div className="navbar bg-[#A8BBA3] shadow-sm text-black ">
   <div className="navbar-start">
     <div className="dropdown">
       <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -17,7 +17,7 @@ const Navbar = () => {
    <a href="/"><img src={logo2} alt="" className='h-16 w-16' /></a>
   </div>
   <div className="navbar-center hidden lg:flex">
-    <ul className="menu menu-horizontal px-1">
+    <ul className="menu menu-horizontal px-1 font-semibold">
     <li><p>হোম</p></li> 
     <li><p>হিসাব</p></li> 
     <li><p>আমাদের তথ্য</p></li> 
@@ -25,7 +25,7 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn bg-yellow-300">লগ আউট</a>
+    <a className="btn bg-yellow-300 text-black rounded-4xl">লগ আউট</a>
   </div>
 </div>
     );

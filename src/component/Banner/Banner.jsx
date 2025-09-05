@@ -1,5 +1,6 @@
 import React from "react";
 import banner from "../../assets/Banner.png";
+import { Link } from "react-router";
 const Banner = () => {
   return (
     <div
@@ -19,7 +20,7 @@ const Banner = () => {
             স্বাবলম্বিতা ও পারস্পরিক সহযোগিতা নিশ্চিত করা। <br/> আজই যুক্ত হোন এবং
             আপনার আগামীকালকে আরও সুরক্ষিত করুন।
           </p>
-          <button className="btn btn-primary">Get Started</button>
+          <Link to={`/service`}><button className="btn bg-yellow-400 rounded-4xl">শুরু করুন</button></Link>
         </div>
       </div>
     </div>
