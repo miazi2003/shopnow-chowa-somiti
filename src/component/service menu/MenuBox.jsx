@@ -6,7 +6,7 @@ import community from "../../assets/community.png"
 import { Link } from 'react-router';
 const MenuBox = () => {
     return (
-       <div className='lg:w-3/4 mx-auto'>
+       <div className='lg:w-3/4 px-6 mx-auto'>
              <div className='main grid grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-4 py-4'>
                 <Link to={"/dashboard"}>
                 <div className=' shadows border border-[#ccc] rounded-lg text-center py-4 px-2 flex flex-col items-center gap-2'>
