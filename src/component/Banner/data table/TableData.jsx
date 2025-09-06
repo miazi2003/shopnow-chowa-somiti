@@ -1,5 +1,5 @@
 import React from 'react';
-import memberData from "../../../public/members.json"
+import memberData from "../../../../public/members.json"
 const TableData = () => {
     return (
         <div>
