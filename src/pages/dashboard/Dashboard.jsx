@@ -1,113 +1,192 @@
-import logo from "../../assets/logo.png"
-import menu from "../../assets/menus.png"
-import memberData from "../../../public/members.json"
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import logo from "../../assets/logo.png";
+import menu from "../../assets/menus.png";
+import memberData from "../../../public/members.json";
+
+
+const monthNames = [
+  "জানুয়ারী", "ফেব্রুয়ারী", "মার্চ", "এপ্রিল", "মে", "জুন",
+  "জুলাই", "আগস্ট","সেপ্টেম্বর", "আক্টোবর", "নভেম্বর", "ডিসেম্বর"
+];
+
 const Dashboard = () => {
-const [searchData , setSearchData] = useState("")
-const [filteredSearchData  , setFilteredSearchData ] = useState(memberData)
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth(); 
+  const currentYear = currentDate.getFullYear();
 
-useEffect(()=>{
-const searched = searchData.trim().toLowerCase();
-
-if(!searched){
-  setFilteredSearchData(memberData)
-}
-else{
-const result = memberData.filter((data)=>( data.name || '').toLowerCase().includes(searched) )
+  const [searchData, setSearchData] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [filteredData, setFilteredData] = useState([]);
 
 
-setFilteredSearchData(result)
-}
+  const uniqueYears = [
+    ...new Set(memberData.map((d) => new Date(d.monthlySavingDate).getFullYear()))
+  ];
+
+  useEffect(() => {
+    let result = memberData;
+    const searchLower = searchData.trim().toLowerCase();
 
 
-
-},[searchData ])
-
-console.log(filteredSearchData)
-    return (
-<>
-
-<div className="navbar bg-[#A8BBA3] shadow-sm flex">
-  <div className="flex-1 flex gap-4 items-center md:hidden">
-
-      <label htmlFor="my-drawer-2"  className=" drawer-button lg:hidden ">
-      <img src={menu} className="w-6 h-6" alt="" />
-    </label> 
-   
-  </div>
-
-<div className="flex-1">
-     <a href="/" className="btn btn-ghost text-xl">
-
-        <img src={logo} className="w-16 h-16" alt="" />
-    </a>
-</div>
-
-
-  <div className="flex-1 flex justify-end">
-    <button className="btn btn-square btn-ghost">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block h-5 w-5 stroke-current"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path> </svg>
-    </button>
-  </div>
-
-
-
-</div>
-<div className="w-full main flex flex-col lg:flex-row">
-  
-        <div className="drawer lg:drawer-open lg:w-3/4 w-auto border-r-1 border-[#ccc]">
-  <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-  <div className="drawer-content flex flex-col ">
-    {/* Page content here */}
-         <div className="overflow-x-auto">
-              <table className="table">
-    {/* head */}
-    <thead className="bg-black text-white">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>address</th>
-        <th>Amount</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-{filteredSearchData.map((data)=>
-    <tbody>
-      {/* row 1 */}
-      <tr>
-        <th>{data.id}</th>
-        <td>{data.name}</td>
-        <td>{data.address}</td>
-        <td>{data.monthlyAmount}</td>
-        <td>{data.monthlySavingDate}</td>
-      </tr>
-    </tbody>
-)}
-  </table>
-</div>
-  </div>
-
-  <div className="drawer-side ">
-    <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-    <ul className="menu bg-[#edf7ea]  text-base-content min-h-full w-60 p-4  border-r-1 border-[#ccc] ">
-      {/* Sidebar content here */}
-      <li><a href="/dashboardLayout/dashboard">Dashboard</a></li>
-      <li><a>Sidebar Item 2</a></li>
-    </ul>
-  </div>
-</div>
-
-
-<div className="search-bar">
-<input type="text" onChange={(e)=>{setSearchData(e.target.value)}}/>
-
-</div>
-</div>
-
-
-</>
-    
+    const isNameSearch = memberData.some((d) =>
+      d.name.toLowerCase().includes(searchLower)
     );
+
+    if (searchLower !== "" && isNameSearch) {
+
+      result = result.filter((d) =>
+        d.name.toLowerCase().includes(searchLower)
+      );
+    } else {
+
+      result = result.filter((d) => {
+        const date = new Date(d.monthlySavingDate);
+        return date.getMonth() === selectedMonth && date.getFullYear() === selectedYear;
+      });
+
+  
+      if (searchLower !== "") {
+        result = result.filter((data) => {
+          const monthMatch = monthNames[new Date(data.monthlySavingDate).getMonth()]
+            .toLowerCase()
+            .includes(searchLower);
+          return monthMatch;
+        });
+      }
+    }
+
+    setFilteredData(result);
+  }, [selectedMonth, selectedYear, searchData]);
+
+  return (
+    <>
+
+      <div className="navbar bg-[#A8BBA3] shadow-sm flex">
+        <div className="flex-1 flex gap-4 items-center md:hidden">
+          <label htmlFor="my-drawer-2" className="drawer-button lg:hidden">
+            <img src={menu} className="w-6 h-6" alt="menu" />
+          </label>
+        </div>
+
+        <div className="flex-1">
+          <a href="/" className="btn btn-ghost text-xl">
+            <img src={logo} className="w-16 h-16" alt="logo" />
+          </a>
+        </div>
+
+        <div className="flex-1 flex justify-end">
+          <button className="btn btn-square btn-ghost">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="inline-block h-5 w-5 stroke-current"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div className="w-full main flex flex-col lg:flex-row min-h-screen">
+        <div className="drawer lg:drawer-open w-full border-r-1 border-[#ccc]">
+          <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content flex flex-col">
+            <div className="overflow-x-auto p-4">
+ 
+              <div className="flex flex-col md:flex-row gap-4 mb-4 items-center">
+                <input
+                  type="text"
+                  placeholder="নাম দিয়ে খুজুন..."
+                  value={searchData}
+                  onChange={(e) => setSearchData(e.target.value)}
+                  className="input input-bordered w-full md:w-1/3"
+                />
+
+                <select
+                  className="select select-bordered w-full md:w-1/6"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+                >
+                  {monthNames.map((name, idx) => (
+                    <option key={idx} value={idx}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  className="select select-bordered w-full md:w-1/6"
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                >
+                  {uniqueYears.map((year, idx) => (
+                    <option key={idx} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+
+             
+                <div className="p-2 bg-green-100 text-green-800 rounded shadow flex flex-col md:flex-row gap-2">
+                  <span className="font-semibold">আজ:</span> {currentDate.getDate()} {monthNames[currentMonth]} {currentYear}
+                </div>
+              </div>
+
+
+              <table className="table w-full">
+                <thead className="bg-black text-white">
+                  <tr>
+                    <th>আইডি</th>
+                    <th>নাম</th>
+                    <th>ঠিকানা</th>
+                    <th>পরিমাণ</th>
+                    <th>জমার তারিখ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData.length > 0 ? (
+                    filteredData.map((data) => (
+                      <tr key={data.id}>
+                        <th>{data.id}</th>
+                        <td>{data.name}</td>
+                        <td>{data.address}</td>
+                        <td>{data.monthlyAmount}</td>
+                        <td>{data.monthlySavingDate}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={5} className="text-center py-6">
+                        No records found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="drawer-side">
+            <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
+            <ul className="menu bg-[#edf7ea] text-base-content min-h-full w-60 p-4 border-r-1 border-[#ccc]">
+              <li>
+                <a href="/dashboardLayout/dashboard">Dashboard</a>
+              </li>
+              <li>
+                <a>Sidebar Item 2</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Dashboard;
