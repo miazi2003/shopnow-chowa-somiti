@@ -1,6 +1,29 @@
 import logo from "../../assets/logo.png"
 import menu from "../../assets/menus.png"
+import memberData from "../../../public/members.json"
+import { useEffect, useState } from "react";
 const Dashboard = () => {
+const [searchData , setSearchData] = useState("")
+const [filteredSearchData  , setFilteredSearchData ] = useState(memberData)
+
+useEffect(()=>{
+const searched = searchData.trim().toLowerCase();
+
+if(!searched){
+  setFilteredSearchData(memberData)
+}
+else{
+const result = memberData.filter((data)=>( data.name || '').toLowerCase().includes(searched) )
+
+
+setFilteredSearchData(result)
+}
+
+
+
+},[searchData ])
+
+console.log(filteredSearchData)
     return (
 <>
 
@@ -30,21 +53,55 @@ const Dashboard = () => {
 
 
 </div>
-
-        <div className="drawer lg:drawer-open">
-  <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-  <div className="drawer-content flex flex-col items-center justify-center">
-    {/* Page content here */}
+<div className="w-full main flex flex-col lg:flex-row">
   
+        <div className="drawer lg:drawer-open lg:w-3/4 w-auto border-r-1 border-[#ccc]">
+  <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+  <div className="drawer-content flex flex-col ">
+    {/* Page content here */}
+         <div className="overflow-x-auto">
+              <table className="table">
+    {/* head */}
+    <thead className="bg-black text-white">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>address</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+{filteredSearchData.map((data)=>
+    <tbody>
+      {/* row 1 */}
+      <tr>
+        <th>{data.id}</th>
+        <td>{data.name}</td>
+        <td>{data.address}</td>
+        <td>{data.monthlyAmount}</td>
+        <td>{data.monthlySavingDate}</td>
+      </tr>
+    </tbody>
+)}
+  </table>
+</div>
   </div>
+
   <div className="drawer-side ">
     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
     <ul className="menu bg-[#edf7ea]  text-base-content min-h-full w-60 p-4  border-r-1 border-[#ccc] ">
       {/* Sidebar content here */}
-      <li><a>Sidebar Item 1</a></li>
+      <li><a href="/dashboardLayout/dashboard">Dashboard</a></li>
       <li><a>Sidebar Item 2</a></li>
     </ul>
   </div>
+</div>
+
+
+<div className="search-bar">
+<input type="text" onChange={(e)=>{setSearchData(e.target.value)}}/>
+
+</div>
 </div>
 
 
