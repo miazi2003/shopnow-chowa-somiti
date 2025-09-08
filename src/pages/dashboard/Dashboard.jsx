@@ -3,15 +3,24 @@ import logo from "../../assets/logo.png";
 import menu from "../../assets/menus.png";
 import memberData from "../../../public/members.json";
 
-
 const monthNames = [
-  "জানুয়ারী", "ফেব্রুয়ারী", "মার্চ", "এপ্রিল", "মে", "জুন",
-  "জুলাই", "আগস্ট","সেপ্টেম্বর", "আক্টোবর", "নভেম্বর", "ডিসেম্বর"
+  "জানুয়ারী",
+  "ফেব্রুয়ারী",
+  "মার্চ",
+  "এপ্রিল",
+  "মে",
+  "জুন",
+  "জুলাই",
+  "আগস্ট",
+  "সেপ্টেম্বর",
+  "আক্টোবর",
+  "নভেম্বর",
+  "ডিসেম্বর",
 ];
 
 const Dashboard = () => {
   const currentDate = new Date();
-  const currentMonth = currentDate.getMonth(); 
+  const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
 
   const [searchData, setSearchData] = useState("");
@@ -19,36 +28,36 @@ const Dashboard = () => {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [filteredData, setFilteredData] = useState([]);
 
-
   const uniqueYears = [
-    ...new Set(memberData.map((d) => new Date(d.monthlySavingDate).getFullYear()))
+    ...new Set(
+      memberData.map((d) => new Date(d.monthlySavingDate).getFullYear())
+    ),
   ];
 
   useEffect(() => {
     let result = memberData;
     const searchLower = searchData.trim().toLowerCase();
 
-
     const isNameSearch = memberData.some((d) =>
       d.name.toLowerCase().includes(searchLower)
     );
 
     if (searchLower !== "" && isNameSearch) {
-
-      result = result.filter((d) =>
-        d.name.toLowerCase().includes(searchLower)
-      );
+      result = result.filter((d) => d.name.toLowerCase().includes(searchLower));
     } else {
-
       result = result.filter((d) => {
         const date = new Date(d.monthlySavingDate);
-        return date.getMonth() === selectedMonth && date.getFullYear() === selectedYear;
+        return (
+          date.getMonth() === selectedMonth &&
+          date.getFullYear() === selectedYear
+        );
       });
 
-  
       if (searchLower !== "") {
         result = result.filter((data) => {
-          const monthMatch = monthNames[new Date(data.monthlySavingDate).getMonth()]
+          const monthMatch = monthNames[
+            new Date(data.monthlySavingDate).getMonth()
+          ]
             .toLowerCase()
             .includes(searchLower);
           return monthMatch;
@@ -59,9 +68,14 @@ const Dashboard = () => {
     setFilteredData(result);
   }, [selectedMonth, selectedYear, searchData]);
 
+  const clearFilters = () => {
+    setSearchData(""); // clear search input
+    setSelectedMonth(currentMonth); // reset to current month
+    setSelectedYear(currentYear); // reset to current year
+  };
+
   return (
     <>
-
       <div className="navbar bg-[#A8BBA3] shadow-sm flex">
         <div className="flex-1 flex gap-4 items-center md:hidden">
           <label htmlFor="my-drawer-2" className="drawer-button lg:hidden">
@@ -99,7 +113,6 @@ const Dashboard = () => {
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             <div className="overflow-x-auto p-4">
- 
               <div className="flex flex-col md:flex-row gap-4 mb-4 items-center">
                 <input
                   type="text"
@@ -133,12 +146,15 @@ const Dashboard = () => {
                   ))}
                 </select>
 
-             
-                <div className="p-2 bg-green-100 text-green-800 rounded shadow flex flex-col md:flex-row gap-2">
-                  <span className="font-semibold">আজ:</span> {currentDate.getDate()} {monthNames[currentMonth]} {currentYear}
+                <div className="p-2 bg-green-100 text-green-800 rounded shadow flex flex-col md:flex-row gap-2 items-center">
+                  <span className="font-semibold">আজ:</span>{" "}
+                  {currentDate.getDate()} {monthNames[currentMonth]}{" "}
+                  {currentYear}
+                  <button className="btn btn-ghost" onClick={clearFilters}>
+                    Clear
+                  </button>
                 </div>
               </div>
-
 
               <table className="table w-full">
                 <thead className="bg-black text-white">
@@ -173,7 +189,11 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="drawer-side">
-            <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
+            <label
+              htmlFor="my-drawer-2"
+              aria-label="close sidebar"
+              className="drawer-overlay"
+            ></label>
             <ul className="menu bg-[#edf7ea] text-base-content min-h-full w-60 p-4 border-r-1 border-[#ccc]">
               <li>
                 <a href="/dashboardLayout/dashboard">Dashboard</a>

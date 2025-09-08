@@ -1,5 +1,6 @@
 import React from 'react';
 import logo2 from "../../assets/logo.png"
+import { Link } from 'react-router';
 const Navbar = () => {
     return (
       <div className="navbar bg-[#A8BBA3] shadow-sm text-black ">
@@ -25,7 +26,7 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn bg-yellow-300 text-black rounded-4xl">লগ আউট</a>
+    <Link to={"/login"}><button className="btn bg-yellow-300 text-black rounded-4xl">লগ ইন</button></Link>
   </div>
 </div>
     );

@@ -4,6 +4,8 @@ import Home from "../pages/home/Home";
 import Service from "../pages/service/Service";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
+import LoginPage from "../pages/authentication/Login";
+import SignUpPage from "../pages/authentication/SignIn";
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +14,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: Home },
       { path: "service", Component: Service },
+      {path : "/login" , Component : LoginPage},
+      {path : "/signIn" , Component : SignUpPage}
     ],
   },
 
