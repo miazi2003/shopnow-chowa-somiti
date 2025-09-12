@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const SquareImageUploader = ({ onUpload }) => {
+const SquareImageUploader = ({ onUpload , clearKey = 0 }) => {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploading, setUploading] = useState(false);
+
+
+  useEffect(() => {
+  // যখন parent clearKey বাড়াবে তখন uploader খালি হবে
+  setUploadedImages([]);
+  onUpload([]);
+}, [clearKey]);
 
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
@@ -44,7 +51,7 @@ const SquareImageUploader = ({ onUpload }) => {
   return (
     <div className="space-y-4">
       <label htmlFor="image-upload" className="block w-full cursor-pointer">
-        <div className="w-full h-48 bg-[#4d6b57] border-2 border-dashed border-lime-400 rounded-md flex items-center justify-center hover:border-lime-300 transition">
+        <div className="w-full h-48 bg-[#A8BBA3] border-2 border-dashed border-lime-400 rounded-md flex items-center justify-center hover:border-lime-300 transition">
           <input
             id="image-upload"
             type="file"
@@ -53,7 +60,7 @@ const SquareImageUploader = ({ onUpload }) => {
             className="hidden"
             onChange={handleFileChange}
           />
-          <span className="text-lime-300 text-sm text-center">
+          <span className="text-black text-sm text-center">
             {uploading ? "Uploading..." : `আপনার সকল ছবিসমূহ এখানে যুক্ত করুন`} <br/> <br/> <br/>
              (সদস্যের ছবি, পরিচয় পত্র কিংবা নিবন্ধন এর ছবি,স্বাক্ষর এর ছবি, নমীনির পরিচয় পত্র কিংবা নিবন্ধন এর ছবি)
           </span>

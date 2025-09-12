@@ -6,6 +6,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
 import LoginPage from "../pages/authentication/Login";
 import SignUpPage from "../pages/authentication/SignIn";
+import MemberDepositForm from "../component/Deposit/DepositForm";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
     Component: DashboardLayout,
     children: [
       { path: "dashboard", Component: Dashboard },
+      { path: "deposit", Component: MemberDepositForm },
     ],
   },
 ]);

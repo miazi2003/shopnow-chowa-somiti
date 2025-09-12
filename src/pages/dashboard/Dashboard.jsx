@@ -214,6 +214,11 @@ const Dashboard = () => {
                 <a>মেম্বার যুক্ত করুন</a> 
               </li>
              </NavLink>
+             <NavLink to={"/dashboardLayout/deposit"}>
+               <li>
+                <a>সদস্যের নামে জমা যুক্ত করুন</a> 
+              </li>
+             </NavLink>
 
               {/* ✅ Mobile Search Filters inside Drawer */}
               <div className="flex-col md:flex-row gap-4 mt-6 items-center flex md:hidden">
