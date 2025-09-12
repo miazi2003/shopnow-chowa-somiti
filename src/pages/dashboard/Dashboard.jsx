@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import menu from "../../assets/menus.png";
 import memberData from "../../../public/members.json";
+import { Link, NavLink } from "react-router";
 
 const monthNames = [
   "জানুয়ারী",
@@ -13,7 +14,7 @@ const monthNames = [
   "জুলাই",
   "আগস্ট",
   "সেপ্টেম্বর",
-  "আক্টোবর",
+  "অক্টোবর",
   "নভেম্বর",
   "ডিসেম্বর",
 ];
@@ -69,13 +70,14 @@ const Dashboard = () => {
   }, [selectedMonth, selectedYear, searchData]);
 
   const clearFilters = () => {
-    setSearchData(""); // clear search input
-    setSelectedMonth(currentMonth); // reset to current month
-    setSelectedYear(currentYear); // reset to current year
+    setSearchData("");
+    setSelectedMonth(currentMonth);
+    setSelectedYear(currentYear);
   };
 
   return (
     <>
+      {/* Navbar */}
       <div className="navbar bg-[#A8BBA3] shadow-sm flex">
         <div className="flex-1 flex gap-4 items-center md:hidden">
           <label htmlFor="my-drawer-2" className="drawer-button lg:hidden">
@@ -108,12 +110,14 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Main layout */}
       <div className="w-full main flex flex-col lg:flex-row min-h-screen">
         <div className="drawer lg:drawer-open w-full border-r-1 border-[#ccc]">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             <div className="overflow-x-auto p-4">
-              <div className="flex flex-col md:flex-row gap-4 mb-4 items-center">
+              {/* ✅ Desktop Search Filters */}
+              <div className="flex-col md:flex-row gap-4 mb-4 items-center hidden md:flex">
                 <input
                   type="text"
                   placeholder="নাম দিয়ে খুজুন..."
@@ -146,7 +150,7 @@ const Dashboard = () => {
                   ))}
                 </select>
 
-                <div className="p-2 bg-green-100 text-green-800 rounded shadow flex flex-col md:flex-row gap-2 items-center">
+                <div className="p-2 bg-green-100 text-green-800 rounded shadow flex gap-2 items-center">
                   <span className="font-semibold">আজ:</span>{" "}
                   {currentDate.getDate()} {monthNames[currentMonth]}{" "}
                   {currentYear}
@@ -156,6 +160,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
+              {/* Data Table */}
               <table className="table w-full">
                 <thead className="bg-black text-white">
                   <tr>
@@ -180,7 +185,7 @@ const Dashboard = () => {
                   ) : (
                     <tr>
                       <td colSpan={5} className="text-center py-6">
-                        No records found.
+                        কোনো তথ্য পাওয়া যায়নি...
                       </td>
                     </tr>
                   )}
@@ -188,19 +193,71 @@ const Dashboard = () => {
               </table>
             </div>
           </div>
+
+          {/* Sidebar */}
           <div className="drawer-side">
             <label
               htmlFor="my-drawer-2"
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-            <ul className="menu bg-[#edf7ea] text-base-content min-h-full w-60 p-4 border-r-1 border-[#ccc]">
+            <ul className="menu bg-[#edf7ea] gap-2 text-base-content min-h-full w-60 p-4 border-r-1 border-[#ccc]">
               <li>
-                <a href="/dashboardLayout/dashboard">Dashboard</a>
+                <NavLink
+                  to="/dashboardLayout/dashboard"
+                >
+                  ড্যাশবোর্ড
+                </NavLink>
               </li>
-              <li>
-                <a>Sidebar Item 2</a>
+             <NavLink to={"/signIn"}>
+               <li>
+                <a>মেম্বার যুক্ত করুন</a> 
               </li>
+             </NavLink>
+
+              {/* ✅ Mobile Search Filters inside Drawer */}
+              <div className="flex-col md:flex-row gap-4 mt-6 items-center flex md:hidden">
+                <input
+                  type="text"
+                  placeholder="নাম দিয়ে খুজুন..."
+                  value={searchData}
+                  onChange={(e) => setSearchData(e.target.value)}
+                  className="input input-bordered w-full"
+                />
+
+                <select
+                  className="select select-bordered w-full"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+                >
+                  {monthNames.map((name, idx) => (
+                    <option key={idx} value={idx}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  className="select select-bordered w-full"
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                >
+                  {uniqueYears.map((year, idx) => (
+                    <option key={idx} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="p-2 bg-green-100 text-green-800 rounded shadow flex gap-2 items-center w-full mt-2">
+                  <span className="font-semibold">আজ:</span>{" "}
+                  {currentDate.getDate()} {monthNames[currentMonth]}{" "}
+                  {currentYear}
+                  <button className="btn btn-ghost" onClick={clearFilters}>
+                    Clear
+                  </button>
+                </div>
+              </div>
             </ul>
           </div>
         </div>
