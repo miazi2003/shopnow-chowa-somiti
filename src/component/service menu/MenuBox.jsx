@@ -20,11 +20,12 @@ const MenuBox = () => {
                     <p className='font-bold'> সেলফ</p>
                     <p className='text-xs'>নিজের সকল জমার তথ্য দেখুন</p>
                     </div>
+               <Link to={"/memberDetails"}>
                 <div className=' shadows border border-[#ccc] rounded-lg text-center py-4 px-2 flex flex-col items-center gap-2'>
                     <img src={member} alt="" />
                     <p className='font-bold'>সদস্য</p>
                     <p className='text-xs'>সকল সদস্য দেখুন</p>
-                </div>
+                </div></Link>
                 <div className=' shadows border border-[#ccc] rounded-lg text-center py-4 px-2 flex flex-col items-center gap-2'>
                     <img src={community} alt="" />
                       <p className='font-bold'>সমিতির তথ্য</p>

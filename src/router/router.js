@@ -7,6 +7,8 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import LoginPage from "../pages/authentication/Login";
 import SignUpPage from "../pages/authentication/SignIn";
 import MemberDepositForm from "../component/Deposit/DepositForm";
+import MemberSignupPage from "../pages/authentication/SignIn";
+import AllMember from "../pages/all member/AllMember";
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +18,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "service", Component: Service },
       { path: "/login", Component: LoginPage },
-      {path:"/signIn" , Component : SignUpPage}
+      {path : "/memberDetails" , Component : AllMember}
     ],
   },
 
@@ -26,6 +28,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "dashboard", Component: Dashboard },
       { path: "deposit", Component: MemberDepositForm },
+      {path : "signIn" , Component : MemberSignupPage}
     ],
   },
 ]);
