@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import menu from "../../assets/menus.png";
-import memberData from "../../../public/members.json";
 import { Link, NavLink } from "react-router";
+import axios from "axios";
 
 const monthNames = [
   "জানুয়ারী",
@@ -28,10 +28,25 @@ const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [filteredData, setFilteredData] = useState([]);
+ const [memberData , setMemberData] = useState([])
+  useEffect(() => {
+    try {
+      const fetchDepositData = async () => {
+        const res = await axios.get("http://localhost:5000/user-deposit");
+        console.log(res.data);
+        setMemberData(res.data);
+      };
+      fetchDepositData();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+
 
   const uniqueYears = [
     ...new Set(
-      memberData.map((d) => new Date(d.monthlySavingDate).getFullYear())
+      memberData.map((d) => new Date(d.date).getFullYear())
     ),
   ];
 
@@ -40,14 +55,14 @@ const Dashboard = () => {
     const searchLower = searchData.trim().toLowerCase();
 
     const isNameSearch = memberData.some((d) =>
-      d.name.toLowerCase().includes(searchLower)
+      d.memberName.toLowerCase().includes(searchLower)
     );
 
     if (searchLower !== "" && isNameSearch) {
-      result = result.filter((d) => d.name.toLowerCase().includes(searchLower));
+      result = result.filter((d) => d.memberName.toLowerCase().includes(searchLower));
     } else {
       result = result.filter((d) => {
-        const date = new Date(d.monthlySavingDate);
+        const date = new Date(d.date);
         return (
           date.getMonth() === selectedMonth &&
           date.getFullYear() === selectedYear
@@ -57,7 +72,7 @@ const Dashboard = () => {
       if (searchLower !== "") {
         result = result.filter((data) => {
           const monthMatch = monthNames[
-            new Date(data.monthlySavingDate).getMonth()
+            new Date(data.date).getMonth()
           ]
             .toLowerCase()
             .includes(searchLower);
@@ -67,7 +82,7 @@ const Dashboard = () => {
     }
 
     setFilteredData(result);
-  }, [selectedMonth, selectedYear, searchData]);
+  }, [selectedMonth, selectedYear, searchData,memberData]);
 
   const clearFilters = () => {
     setSearchData("");
@@ -164,9 +179,11 @@ const Dashboard = () => {
               <table className="table w-full">
                 <thead className="bg-black text-white">
                   <tr>
-                    <th>আইডি</th>
+
+                    <th>আইডি</th> 
                     <th>নাম</th>
                     <th>ঠিকানা</th>
+                    <th>মোবাইল</th> 
                     <th>পরিমাণ</th>
                     <th>জমার তারিখ</th>
                   </tr>
@@ -175,11 +192,12 @@ const Dashboard = () => {
                   {filteredData.length > 0 ? (
                     filteredData.map((data) => (
                       <tr key={data.id}>
-                        <th>{data.id}</th>
-                        <td>{data.name}</td>
+                        <td>{data.memberID}</td>
+                        <td>{data.memberName}</td>
                         <td>{data.address}</td>
-                        <td>{data.monthlyAmount}</td>
-                        <td>{data.monthlySavingDate}</td>
+                        <td>{data.mobile1}<br/>{data.mobile2}</td>
+                        <td>{data.amount}</td>
+                        <td>{(data.date || "").split("T")[0]}</td>
                       </tr>
                     ))
                   ) : (
@@ -203,22 +221,18 @@ const Dashboard = () => {
             ></label>
             <ul className="menu bg-[#edf7ea] gap-2 text-base-content min-h-full w-60 p-4 border-r-1 border-[#ccc]">
               <li>
-                <NavLink
-                  to="/dashboardLayout/dashboard"
-                >
-                  ড্যাশবোর্ড
-                </NavLink>
+                <NavLink to="/dashboardLayout/dashboard">ড্যাশবোর্ড</NavLink>
               </li>
-             <NavLink to={"/signIn"}>
-               <li>
-                <a>মেম্বার যুক্ত করুন</a> 
-              </li>
-             </NavLink>
-             <NavLink to={"/dashboardLayout/deposit"}>
-               <li>
-                <a>সদস্যের নামে জমা যুক্ত করুন</a> 
-              </li>
-             </NavLink>
+              <NavLink to={"/signIn"}>
+                <li>
+                  <p>মেম্বার যুক্ত করুন</p>
+                </li>
+              </NavLink>
+              <NavLink to={"/dashboardLayout/deposit"}>
+                <li>
+                  <p>সদস্যের নামে জমা যুক্ত করুন</p>
+                </li>
+              </NavLink>
 
               {/* ✅ Mobile Search Filters inside Drawer */}
               <div className="flex-col md:flex-row gap-4 mt-6 items-center flex md:hidden">
