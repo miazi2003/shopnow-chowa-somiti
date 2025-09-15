@@ -16,6 +16,9 @@ const DashboardLayout = () => {
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
         <ul className="menu bg-[#edf7ea] gap-2 text-base-content min-h-full w-60 p-4 border-r-1 border-[#ccc]">
           <li>
+            <NavLink to="/service" className=' bg-yellow-600 text-white flex items-center '><p className=''><span className='text-2xl font-bold'>↵ </span> মেন্যু তে ফিরুন</p></NavLink> 
+          </li>
+          <li>
             <NavLink to="/dashboardLayout/dashboard">ড্যাশবোর্ড</NavLink>
           </li>
           <li>

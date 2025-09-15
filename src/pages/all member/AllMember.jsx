@@ -4,21 +4,41 @@ import React, { useEffect, useState } from 'react';
 const AllMember = () => {
 
 const [allUsers, setAllUsers] = useState([])
+const [error ,  setError] = useState(false)
 
 
-useEffect(()=>{
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/users");
+        console.log(res.data);
+        setAllUsers(res.data);
+      } catch (err) {
+        console.error(err);
+        setError(true);
+      }
+    };
 
-try{
-        const fetchAllUsers = async() =>{
-const res = await axios.get('http://localhost:5000/users')
-console.log(res.data)
-setAllUsers(res.data)
-    }
-fetchAllUsers()
-}catch(err){
-    console.log(err)
-}
-},[])
+    fetchAllUsers();
+  }, []);
+
+  if (error) {
+    return (
+      <p className="min-h-screen w-full flex items-center justify-center text-red-600 font-bold text-2xl">
+        No members Found.
+      </p>
+    );
+  }
+
+
+  if(allUsers.length === 0){
+    return  (
+      <p className="min-h-screen w-full flex items-center justify-center text-2xl">
+      Loading members....
+      </p>
+    );
+  }
+
 
     return (
 <>
@@ -32,6 +52,9 @@ fetchAllUsers()
     <h2 className="card-title">নামঃ {users.memberName}</h2>
     <h6>পিতাঃ {users.fatherName}</h6>
     <h6>মোবাইলঃ {users.mobile1}, <br /> {users.mobile2}</h6>
+  </div>
+
+  <div>
   </div>
 </div>
 

@@ -116,7 +116,7 @@ const handleUpdate = async () => {
       amount: parseFloat(updateAmount),
       date: updateDate,
     });
-
+    console.log(res.data)
     // Update local state
     const updatedData = memberData.map((d) =>
       d._id === editingRow._id ? { ...d, amount: parseFloat(updateAmount), date: updateDate } : d
@@ -133,7 +133,44 @@ const handleUpdate = async () => {
 
   return (
     <>
-      <div className="w-full main flex flex-col lg:flex-row min-h-screen">
+      <div className="w-full main flex flex-col min-h-screen">
+
+        {/* update form */}
+{editingRow && (
+  <div className="mb-4 p-4 bg-yellow-100 rounded shadow">
+    <h3 className="font-bold mb-2">Update Deposit for {editingRow.memberName}</h3>
+    <div className="flex flex-col md:flex-row gap-2 mb-2">
+      <input
+        type="number"
+        value={updateAmount}
+        onChange={(e) => setUpdateAmount(e.target.value)}
+        className="border rounded p-2 flex-1"
+        placeholder="Amount"
+      />
+      <input
+        type="date"
+        value={updateDate}
+        onChange={(e) => setUpdateDate(e.target.value)}
+        className="border rounded p-2 flex-1"
+      />
+    </div>
+    <div className="flex gap-2">
+      <button
+        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        onClick={handleUpdate}
+      >
+        Update
+      </button>
+      <button
+        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+        onClick={() => setEditingRow(null)}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
+    
         <div className="drawer lg:drawer-open w-full border-r-1 border-[#ccc]">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
@@ -179,45 +216,10 @@ const handleUpdate = async () => {
 
             <div className="overflow-x-auto md:p-4 p-0 flex flex-col gap-4">
               {/* Mobile Filters */}
-
-              {/* Data Table + Pagination */}
+          {/* Data Table + Pagination */}
               <div className="flex flex-col gap-4">
 
-{/* update form */}
-{editingRow && (
-  <div className="mb-4 p-4 bg-yellow-100 rounded shadow">
-    <h3 className="font-bold mb-2">Update Deposit for {editingRow.memberName}</h3>
-    <div className="flex flex-col md:flex-row gap-2 mb-2">
-      <input
-        type="number"
-        value={updateAmount}
-        onChange={(e) => setUpdateAmount(e.target.value)}
-        className="border rounded p-2 flex-1"
-        placeholder="Amount"
-      />
-      <input
-        type="date"
-        value={updateDate}
-        onChange={(e) => setUpdateDate(e.target.value)}
-        className="border rounded p-2 flex-1"
-      />
-    </div>
-    <div className="flex gap-2">
-      <button
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        onClick={handleUpdate}
-      >
-        Update
-      </button>
-      <button
-        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-        onClick={() => setEditingRow(null)}
-      >
-        Cancel
-      </button>
-    </div>
-  </div>
-)}
+
 {/* table */}
                 <table className="table w-full">
                   <thead className="bg-black text-white">
@@ -248,7 +250,7 @@ const handleUpdate = async () => {
                           <td>
                             <button
                               onClick={() => handleEdit(data)}
-                              className="text-blue-500 hover:text-blue-700"
+                              className="text-blue-500 hover:text-blue-700 cursor-pointer"
                             >
                               ✏️
                             </button>

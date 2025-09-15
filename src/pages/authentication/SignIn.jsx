@@ -6,24 +6,23 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 function MemberSignupPage() {
-  const [error, setError] = useState("");
+   const [error, setError] = useState("");
   const [imageList, setImageList] = useState([]);
   const [resetKey, setResetKey] = useState(0);
-  const { createUser } = useContext(AuthContext);
-  const [loading , setLoading] = useState(false)
+  const { createUser , updateUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError("");
-    setLoading(true)
-    const form = new FormData(e.target);
+    setLoading(true);
 
-    // Example: collect all data
+    const form = new FormData(e.target);
     const data = Object.fromEntries(form.entries());
     console.log("Form Data:", data);
-    const { memberEmail, memberPassword } = data;
-    console.log(memberEmail, memberPassword);
+
+    const { memberEmail, memberPassword, memberName } = data;
 
     const formData = {
       ...data,
@@ -32,26 +31,31 @@ function MemberSignupPage() {
 
     createUser(memberEmail, memberPassword)
       .then(async (res) => {
-        console.log(res);
+        console.log("Firebase user created:", res.user);
 
+        // ✅ Update displayName with memberName
+        await updateUser(memberName);
+
+        // ✅ Save user data to backend
         const respond = await axios.post(
           "http://localhost:5000/users",
           formData
         );
         console.log(respond.data);
-        toast.success("মেম্বার যুক্ত হয়েছে"); 
-        setLoading(false)
+
+        toast.success("মেম্বার যুক্ত হয়েছে");
+        setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-         toast.error("মেম্বার যুক্ত করা সম্ভব হয়নি");  
+        console.error(err);
+        toast.error("মেম্বার যুক্ত করা সম্ভব হয়নি");
+        setLoading(false);
       });
 
-e.target.reset();
-setImageList([]);
-setResetKey((k) => k + 1);
+    e.target.reset();
+    setImageList([]);
+    setResetKey((k) => k + 1);
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center  py-4">
       <div className="max-w-3xl w-full bg-white rounded-lg shadow p-8">

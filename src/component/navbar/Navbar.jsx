@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo2 from "../../assets/logo.png"
 import { Link } from 'react-router';
+import { AuthContext } from '../../context/AuthContext';
 const Navbar = () => {
+
+const {user , signOutUser} = useContext(AuthContext)
+console.log(user)
+
+
+const logOutUser = () =>{
+  signOutUser()
+}
+
     return (
       <div className="navbar bg-[#A8BBA3] shadow-sm text-black ">
   <div className="navbar-start">
@@ -19,14 +29,14 @@ const Navbar = () => {
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1 font-semibold">
-    <li><p>হোম</p></li> 
-    <li><p>হিসাব</p></li> 
+   <Link to={"/"}> <li><p>হোম</p></li> </Link>
+    <Link to={"/dashBoardLayout/dashBoard"}><li><p>হিসাব</p></li> </Link>
     <li><p>আমাদের তথ্য</p></li> 
     <li><p>সদস্যদের তথ্য</p></li>  
     </ul>
   </div>
   <div className="navbar-end">
-    <Link to={"/login"}><button className="btn bg-yellow-300 text-black rounded-4xl">লগ ইন</button></Link>
+    {user ?<button className="btn bg-yellow-300 text-black rounded-4xl" onClick={()=>{logOutUser()}}>লগ আউট</button> : <Link to={"/login"}><button className="btn bg-yellow-300 text-black rounded-4xl">লগ ইন</button></Link> }
   </div>
 </div>
     );

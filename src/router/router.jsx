@@ -9,6 +9,7 @@ import SignUpPage from "../pages/authentication/SignIn";
 import MemberDepositForm from "../component/Deposit/DepositForm";
 import MemberSignupPage from "../pages/authentication/SignIn";
 import AllMember from "../pages/all member/AllMember";
+import PrivateRouter from "./PrivateRouter";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "service", Component: Service },
       { path: "/login", Component: LoginPage },
-      {path : "/memberDetails" , Component : AllMember}
+      {path : "/memberDetails" , element: <PrivateRouter><AllMember></AllMember></PrivateRouter>}
     ],
   },
 
@@ -26,9 +27,9 @@ export const router = createBrowserRouter([
     path: "dashboardLayout",
     Component: DashboardLayout,
     children: [
-      { path: "dashboard", Component: Dashboard },
-      { path: "deposit", Component: MemberDepositForm },
-      {path : "signIn" , Component : MemberSignupPage}
+      { path: "dashboard",  element : <PrivateRouter><Dashboard></Dashboard></PrivateRouter> },
+      { path: "deposit", element : <PrivateRouter><MemberDepositForm></MemberDepositForm></PrivateRouter> },
+      {path : "signIn" , element : <PrivateRouter><MemberSignupPage></MemberSignupPage></PrivateRouter>}
     ],
   },
 ]);

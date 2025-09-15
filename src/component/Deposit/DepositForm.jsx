@@ -78,7 +78,7 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
         <div className="mb-4">
           <label className="block mb-1 font-medium">Select Member</label>
           {loadingUsers ? (
-            <p>Loading members...</p>
+            <p className="p-2 w-full h-17">Loading members...</p>
           ) : (
             <select
               value={selectedUserId}
@@ -95,14 +95,17 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
           )}
         </div>
 
-        {selectedUser && (
+        {selectedUser ? (
           <div className="mb-4">
             <p>
               <strong>Address:</strong>{" "}
               {`${selectedUser.presentVillage}, ${selectedUser.presentPost}, ${selectedUser.presentThana}, ${selectedUser.presentDistrict}`}
             </p>
           </div>
-        )}
+        ) :  <p>
+              <strong>Address:</strong>
+                Loading Address....
+            </p> }
 
 <div className="mb-4">
   <label className="block mb-1 font-medium">Deposit Date</label>

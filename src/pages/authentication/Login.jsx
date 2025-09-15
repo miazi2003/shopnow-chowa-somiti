@@ -1,11 +1,17 @@
 // AuthPages.jsx
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router";
+import React, { useContext, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
 
 function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { signInUser } = useContext(AuthContext)
   const navigate = useNavigate();
+    const location = useLocation();
+
+
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,19 +29,11 @@ function LoginPage() {
     setLoading(true);
     try {
       // replace with your backend API
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+     signInUser(email , password).then((res)=>{
+      console.log(res.data)
+      navigate(from , { replace: true });
+     })
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || "Login failed");
-      }
-
-      navigate("/"); // redirect after login
     } catch (err) {
       setError(err.message);
     } finally {
