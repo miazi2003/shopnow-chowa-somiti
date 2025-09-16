@@ -10,6 +10,7 @@ import MemberDepositForm from "../component/Deposit/DepositForm";
 import MemberSignupPage from "../pages/authentication/SignIn";
 import AllMember from "../pages/all member/AllMember";
 import PrivateRouter from "./PrivateRouter";
+import SelfData from "../pages/self service/SelfData";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +20,8 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "service", Component: Service },
       { path: "/login", Component: LoginPage },
-      {path : "/memberDetails" , element: <PrivateRouter><AllMember></AllMember></PrivateRouter>}
+      {path : "/memberDetails" , element: <PrivateRouter><AllMember></AllMember></PrivateRouter>},
+      {path : "/selfService" , element : <PrivateRouter><SelfData></SelfData></PrivateRouter>}
     ],
   },
 

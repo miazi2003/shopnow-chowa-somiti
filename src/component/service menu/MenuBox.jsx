@@ -15,11 +15,12 @@ const MenuBox = () => {
                     <p className='text-xs '> সকল সদস্যের জমার হিসাব দেখুন</p>
                 </div>
                 </Link>
+             <Link to={"/selfService"}>
                 <div className=' shadows border border-[#ccc] rounded-lg text-center py-4 px-2 flex flex-col items-center gap-2'>
                     <img src={self} alt="" />
                     <p className='font-bold'> সেলফ</p>
                     <p className='text-xs'>নিজের সকল জমার তথ্য দেখুন</p>
-                    </div>
+                    </div></Link>
                <Link to={"/memberDetails"}>
                 <div className=' shadows border border-[#ccc] rounded-lg text-center py-4 px-2 flex flex-col items-center gap-2'>
                     <img src={member} alt="" />

@@ -56,6 +56,7 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
         memberName: selectedUser.memberName,
         amount: parseFloat(amount),
         date: date,
+        email : selectedUser.memberEmail,
         address: `${selectedUser.presentVillage}, ${selectedUser.presentPost}, ${selectedUser.presentThana}, ${selectedUser.presentDistrict}`,
       };
      const res =  await axios.post("http://localhost:5000/user-deposit", depositData);
@@ -100,6 +101,18 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
             <p>
               <strong>Address:</strong>{" "}
               {`${selectedUser.presentVillage}, ${selectedUser.presentPost}, ${selectedUser.presentThana}, ${selectedUser.presentDistrict}`}
+            </p>
+          </div>
+        ) :  <p>
+              <strong>Address:</strong>
+                Loading Address....
+            </p> }
+
+        {selectedUser ? (
+          <div className="mb-4">
+            <p>
+              <strong>User Email:</strong>{" "}
+              {`${selectedUser.memberEmail}`}
             </p>
           </div>
         ) :  <p>
