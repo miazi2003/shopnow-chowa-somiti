@@ -3,10 +3,11 @@ import React, { useContext, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 
+
 function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signInUser } = useContext(AuthContext)
+  const { signInUser } = useContext(AuthContext);
   const navigate = useNavigate();
     const location = useLocation();
 

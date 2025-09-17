@@ -3,7 +3,8 @@ import SquareImageUploader from "../../component/SquareImageUploader";
 import AuthProvider from "../../context/AuthProvider";
 import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import axios from "axios";
+import useAxiosSecure from "../../hook/useAxiosSecure";
+
 
 function MemberSignupPage() {
    const [error, setError] = useState("");
@@ -11,7 +12,7 @@ function MemberSignupPage() {
   const [resetKey, setResetKey] = useState(0);
   const { createUser , updateUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-
+  const axiosSecure = useAxiosSecure()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,7 +38,7 @@ function MemberSignupPage() {
         await updateUser(memberName);
 
         // ✅ Save user data to backend
-        const respond = await axios.post(
+        const respond = await axiosSecure.post(
           "http://localhost:5000/users",
           formData
         );

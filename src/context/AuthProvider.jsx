@@ -8,6 +8,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import auth from "../firebase/firebase.init";
+import axios from "axios";
 
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -38,10 +39,27 @@ return updateProfile(auth.currentUser , {
   }
 
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
       console.log("auth changes", currentUser);
       setUser(currentUser);
       setLoading(false);
+
+      if (currentUser) {
+
+        try {
+          await axios.post(
+            "http://localhost:5000/jwt",
+            { email: currentUser.email }, 
+            { withCredentials: true } 
+          );
+          console.log("JWT cookie set ");
+        } catch (err) {
+          console.error("JWT fetch failed ", err);
+        }
+      } else {
+
+        await axios.post("http://localhost:5000/logout", {}, { withCredentials: true });
+      }
     });
 
     return () => {

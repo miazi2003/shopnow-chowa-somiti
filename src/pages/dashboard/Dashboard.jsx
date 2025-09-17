@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
+import useAxiosSecure from "../../hook/useAxiosSecure";
+
 
 const monthNames = [
   "জানুয়ারী", "ফেব্রুয়ারী", "মার্চ", "এপ্রিল", "মে", "জুন",
@@ -10,6 +12,7 @@ const Dashboard = () => {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
+  const axiosSecure = useAxiosSecure()
 
   const [searchData, setSearchData] = useState("");
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
@@ -27,7 +30,7 @@ const Dashboard = () => {
 
   const fetchDepositData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/user-deposit");
+      const res = await axiosSecure.get("http://localhost:5000/user-deposit");
       setMemberData(res.data);
 
       const total = res.data.reduce(
@@ -42,7 +45,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDepositData();
-  }, []);
+  }, [axiosSecure ]);
 
   const uniqueYears = [
     ...new Set(memberData.map((d) => new Date(d.date).getFullYear())),
@@ -109,7 +112,7 @@ const Dashboard = () => {
     if (!updateAmount || !updateDate) return alert("Enter amount and date");
 
     try {
-      await axios.put(
+      await axiosSecure.put(
         `http://localhost:5000/user-deposit/${editingRow._id}`,
         {
           amount: parseFloat(updateAmount),

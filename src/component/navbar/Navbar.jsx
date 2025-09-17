@@ -2,15 +2,31 @@ import React, { useContext } from 'react';
 import logo2 from "../../assets/logo.png"
 import { Link } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
+import useAxiosSecure from '../../hook/useAxiosSecure';
+
 const Navbar = () => {
 
 const {user , signOutUser} = useContext(AuthContext)
 console.log(user)
+  const axiosSecure = useAxiosSecure()
 
+const logOutUser = async () => {
+    try {
+      // Firebase থেকে logout
+      await signOutUser();
 
-const logOutUser = () =>{
-  signOutUser()
-}
+      // Backend থেকে cookie clear
+      await axiosSecure.post(
+        "http://localhost:5000/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      console.log("Logout successful ");
+    } catch (err) {
+      console.error("Logout failed ", err);
+    }
+  };
 
     return (
       <div className="navbar bg-[#A8BBA3] shadow-sm text-black ">

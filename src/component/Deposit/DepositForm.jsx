@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import { NavLink } from "react-router";
+import useAxiosSecure from "../../hook/useAxiosSecure";
 
 
 export default function MemberDepositForm() {
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [error, setError] = useState("");
-
+  const axiosSecure = useAxiosSecure()
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [amount, setAmount] = useState("");
@@ -18,7 +19,7 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
     const fetchUsers = async () => {
       setLoadingUsers(true);
       try {
-        const { data } = await axios.get("http://localhost:5000/users");
+        const { data } = await axiosSecure.get("http://localhost:5000/users");
         const userArray = Array.isArray(data) ? data : [];
         setUsers(userArray);
         if (userArray.length > 0) {
@@ -59,7 +60,7 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
         email : selectedUser.memberEmail,
         address: `${selectedUser.presentVillage}, ${selectedUser.presentPost}, ${selectedUser.presentThana}, ${selectedUser.presentDistrict}`,
       };
-     const res =  await axios.post("http://localhost:5000/user-deposit", depositData);
+     const res =  await axiosSecure.post("http://localhost:5000/user-deposit", depositData);
       alert("Deposit saved successfully!");
       console.log(res.data)
       setAmount("");

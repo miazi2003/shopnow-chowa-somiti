@@ -1,16 +1,17 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
+import useAxiosSecure from '../../hook/useAxiosSecure';
 
 const AllMember = () => {
 
 const [allUsers, setAllUsers] = useState([])
 const [error ,  setError] = useState(false)
-
+  const axiosSecure = useAxiosSecure()
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/users");
+        const res = await axiosSecure.get("http://localhost:5000/users");
         console.log(res.data);
         setAllUsers(res.data);
       } catch (err) {
@@ -20,7 +21,7 @@ const [error ,  setError] = useState(false)
     };
 
     fetchAllUsers();
-  }, []);
+  }, [axiosSecure]);
 
   if (error) {
     return (
