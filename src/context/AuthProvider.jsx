@@ -8,12 +8,10 @@ import {
   updateProfile,
 } from "firebase/auth";
 import auth from "../firebase/firebase.init";
-import axios from "axios";
 
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
-
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -25,46 +23,25 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const signOutUser = () => {
+  const signOutUser = async () => {
     setLoading(true);
-    return signOut(auth);
+    await signOut(auth); // wait for Firebase sign out
+    // setUser(null); // optional, onAuthStateChanged will handle it
+    setLoading(false);
   };
 
-
-  const updateUser = (memberName)=>{
-setLoading(true)
-return updateProfile(auth.currentUser , {
-  displayName : memberName
-})
-  }
+  const updateUser = (displayName) => {
+    setLoading(true);
+    return updateProfile(auth.currentUser, { displayName });
+  };
 
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("auth changes", currentUser);
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser); // logout হলে null হবে
       setLoading(false);
-
-      if (currentUser) {
-
-        try {
-          await axios.post(
-            "http://localhost:5000/jwt",
-            { email: currentUser.email }, 
-            { withCredentials: true } 
-          );
-          console.log("JWT cookie set ");
-        } catch (err) {
-          console.error("JWT fetch failed ", err);
-        }
-      } else {
-
-        await axios.post("http://localhost:5000/logout", {}, { withCredentials: true });
-      }
     });
 
-    return () => {
-      unSubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const userInfo = {
@@ -73,9 +50,14 @@ return updateProfile(auth.currentUser , {
     signInUser,
     signOutUser,
     user,
-    updateUser
+    updateUser,
   };
 
-  return <AuthContext value={userInfo}>{children}</AuthContext>;
+  return (
+    <AuthContext.Provider value={userInfo}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
+
 export default AuthProvider;

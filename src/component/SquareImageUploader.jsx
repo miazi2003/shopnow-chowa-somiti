@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import useAxiosSecure from "../hook/useAxiosSecure";
+import axios from "axios";
 
 
 const SquareImageUploader = ({ onUpload , clearKey = 0 }) => {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const axiosSecure = useAxiosSecure()
 
   useEffect(() => {
   // যখন parent clearKey বাড়াবে তখন uploader খালি হবে
@@ -25,7 +24,7 @@ const SquareImageUploader = ({ onUpload , clearKey = 0 }) => {
       formData.append("image", file);
 
       try {
-        const res = await axiosSecure.post(
+        const res = await axios.post(
           `https://api.imgbb.com/1/upload?key=${
             import.meta.env.VITE_imgbb_api_key
           }`,

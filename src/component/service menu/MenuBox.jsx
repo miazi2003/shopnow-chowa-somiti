@@ -4,6 +4,7 @@ import self from "../../assets/self-awareness.png"
 import member from "../../assets/group (3).png"
 import community from "../../assets/community.png"
 import { Link } from 'react-router';
+
 const MenuBox = () => {
     return (
        <div className='lg:w-3/4 px-6 mx-auto'>

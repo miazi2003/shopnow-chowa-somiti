@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-import useAxiosSecure from "../../hook/useAxiosSecure";
+
 
 
 const monthNames = [
@@ -12,16 +13,15 @@ const Dashboard = () => {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
-  const axiosSecure = useAxiosSecure()
 
   const [searchData, setSearchData] = useState("");
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [memberData, setMemberData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [editingRow, setEditingRow] = useState(null);
-  const [updateAmount, setUpdateAmount] = useState("");
-  const [updateDate, setUpdateDate] = useState("");
+  // const [editingRow, setEditingRow] = useState(null);
+  // const [updateAmount, setUpdateAmount] = useState("");
+  // const [updateDate, setUpdateDate] = useState("");
   const [sum, setSum] = useState(0);
 
   // Pagination
@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   const fetchDepositData = async () => {
     try {
-      const res = await axiosSecure.get("http://localhost:5000/user-deposit");
+      const res = await axios.get("http://localhost:5000/user-deposit");
       setMemberData(res.data);
 
       const total = res.data.reduce(
@@ -45,7 +45,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDepositData();
-  }, [axiosSecure ]);
+  }, []);
 
   const uniqueYears = [
     ...new Set(memberData.map((d) => new Date(d.date).getFullYear())),
@@ -102,39 +102,39 @@ const Dashboard = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleEdit = (row) => {
-    setEditingRow(row);
-    setUpdateAmount(row.amount);
-    setUpdateDate((row.date || "").split("T")[0]);
-  };
+  // const handleEdit = (row) => {
+  //   setEditingRow(row);
+  //   setUpdateAmount(row.amount);
+  //   setUpdateDate((row.date || "").split("T")[0]);
+  // };
 
-  const handleUpdate = async () => {
-    if (!updateAmount || !updateDate) return alert("Enter amount and date");
+  // const handleUpdate = async () => {
+  //   if (!updateAmount || !updateDate) return alert("Enter amount and date");
 
-    try {
-      await axiosSecure.put(
-        `http://localhost:5000/user-deposit/${editingRow._id}`,
-        {
-          amount: parseFloat(updateAmount),
-          date: updateDate,
-        }
-      );
+  //   try {
+  //     await axios.put(
+  //       `http://localhost:5000/user-deposit/${editingRow._id}`,
+  //       {
+  //         amount: parseFloat(updateAmount),
+  //         date: updateDate,
+  //       }
+  //     );
 
-      setEditingRow(null);
-      alert("Deposit updated successfully!");
+  //     setEditingRow(null);
+  //     alert("Deposit updated successfully!");
 
-      // Auto refresh data
-      fetchDepositData();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to update deposit");
-    }
-  };
+  //     // Auto refresh data
+  //     fetchDepositData();
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Failed to update deposit");
+  //   }
+  // };
 
   return (
     <div className="w-full main flex flex-col min-h-screen">
 
-      {/* Update Form */}
+      {/* Update Form
       {editingRow && (
         <div className="mb-4 p-4 bg-yellow-100 rounded shadow">
           <h3 className="font-bold mb-2">Update Deposit for {editingRow.memberName}</h3>
@@ -168,7 +168,7 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="overflow-x-auto md:p-4 p-0 flex flex-col gap-4">
         {/* Filters */}
@@ -237,14 +237,14 @@ const Dashboard = () => {
                   </td>
                   <td>{data.amount}</td>
                   <td>{(data.date || "").split("T")[0]}</td>
-                  <td>
+                  {/* <td>
                     <button
                       onClick={() => handleEdit(data)}
                       className="text-blue-500 hover:text-blue-700 cursor-pointer"
                     >
                       ✏️
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))
             ) : (

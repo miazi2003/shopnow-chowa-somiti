@@ -20,8 +20,8 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "service", Component: Service },
       { path: "/login", Component: LoginPage },
-      {path : "/memberDetails" , element: <PrivateRouter><AllMember></AllMember></PrivateRouter>},
-      {path : "/selfService" , element : <PrivateRouter><SelfData></SelfData></PrivateRouter>}
+      {path : "/memberDetails" , element: <PrivateRouter ><AllMember></AllMember></PrivateRouter>},
+      {path : "/selfService" , element : <PrivateRouter ><SelfData></SelfData></PrivateRouter>}
     ],
   },
 
@@ -29,9 +29,9 @@ export const router = createBrowserRouter([
     path: "dashboardLayout",
     Component: DashboardLayout,
     children: [
-      { path: "dashboard",  element : <PrivateRouter><Dashboard></Dashboard></PrivateRouter> },
-      { path: "deposit", element : <PrivateRouter><MemberDepositForm></MemberDepositForm></PrivateRouter> },
-      {path : "signIn" , element : <PrivateRouter><MemberSignupPage></MemberSignupPage></PrivateRouter>}
+      { path: "dashboard",  element : <PrivateRouter ><Dashboard></Dashboard></PrivateRouter> },
+      { path: "deposit", element : <PrivateRouter ><MemberDepositForm></MemberDepositForm></PrivateRouter> },
+      {path : "signIn" , element : <MemberSignupPage></MemberSignupPage>}
     ],
   },
 ]);

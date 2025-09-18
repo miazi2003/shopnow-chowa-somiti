@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
-import useAxiosSecure from '../../hook/useAxiosSecure';
+import axios from "axios";
 
 const SelfData = () => {
   const { user, loading } = useContext(AuthContext);
@@ -9,14 +9,14 @@ const SelfData = () => {
   const [error, setError] = useState('');
   const [allSum , setAllSum] = useState(0)
   const [loadingData, setLoadingData] = useState(true);
-    const axiosSecure = useAxiosSecure()
+
   useEffect(() => {
     if (!user) return;
 
     const fetchDeposits = async () => {
       try {
         setLoadingData(true);
-        const res = await axiosSecure.get(`http://localhost:5000/deposits?email=${user.email}`);
+        const res = await axios.get(`http://localhost:5000/deposits?email=${user.email}`);
         setDeposits(res.data);
 
       let total = 0 ;
@@ -41,7 +41,7 @@ const SelfData = () => {
 
 
 
-  }, [user , axiosSecure]);
+  }, [user , axios]);
 
   if (loading || loadingData) {
     return (
