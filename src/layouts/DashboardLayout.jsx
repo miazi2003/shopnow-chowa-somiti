@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink, Outlet } from 'react-router';
 import Footer from '../component/footer/Footer';
 import { AuthContext } from '../context/AuthContext';
@@ -8,10 +8,16 @@ import menu from "../assets/menus.png";
 
 const DashboardLayout = () => {
   const { user } = useContext(AuthContext);
-
+  const [isEmail , setIsEmail] = useState(false)
 
   let userEmail = user?.email;
  
+
+  if(userEmail === "yeasinmiazi1997@gmail.com" || userEmail === "ashrafabubakar1212@gmail.com"){
+    setIsEmail(true)
+  }else{
+    setIsEmail(false)
+  }
    
   return (
     <div className="drawer lg:drawer-open flex min-h-screen">
@@ -33,7 +39,7 @@ const DashboardLayout = () => {
           </li>
 
           {/* Admin-only menu items */}
-     { userEmail === "yeasinmiazi1997@gmail.com" &&
+     { isEmail &&
 
 
 
