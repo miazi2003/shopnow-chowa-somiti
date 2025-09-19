@@ -11,7 +11,7 @@ const [error ,  setError] = useState(false)
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const res = await axios.get("https://amazing-cannoli-b3379f.netlify.app/users");
+        const res = await axios.get("https://shopnow-chowa-somiti-server.vercel.app/users");
         console.log(res.data);
         setAllUsers(res.data);
       } catch (err) {

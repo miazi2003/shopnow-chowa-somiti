@@ -16,7 +16,7 @@ const SelfData = () => {
     const fetchDeposits = async () => {
       try {
         setLoadingData(true);
-        const res = await axios.get(`https://amazing-cannoli-b3379f.netlify.app/deposits?email=${user.email}`);
+        const res = await axios.get(`https://shopnow-chowa-somiti-server.vercel.app/deposits?email=${user.email}`);
         setDeposits(res.data);
 
       let total = 0 ;

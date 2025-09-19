@@ -41,7 +41,7 @@ function MemberSignupPage() {
 
         // ✅ Save user data to backend
         const respond = await axios.post(
-          "https://amazing-cannoli-b3379f.netlify.app/users",
+          "https://shopnow-chowa-somiti-server.vercel.app/users",
           formData
         );
         console.log(respond.data);

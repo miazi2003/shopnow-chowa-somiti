@@ -20,7 +20,7 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
     const fetchUsers = async () => {
       setLoadingUsers(true);
       try {
-        const { data } = await axios.get("https://amazing-cannoli-b3379f.netlify.app/users");
+        const { data } = await axios.get("https://shopnow-chowa-somiti-server.vercel.app/users");
         const userArray = Array.isArray(data) ? data : [];
         setUsers(userArray);
         if (userArray.length > 0) {
@@ -61,7 +61,7 @@ const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
         email : selectedUser.memberEmail,
         address: `${selectedUser.presentVillage}, ${selectedUser.presentPost}, ${selectedUser.presentThana}, ${selectedUser.presentDistrict}`,
       };
-     const res =  await axios.post("https://amazing-cannoli-b3379f.netlify.app/user-deposit", depositData);
+     const res =  await axios.post("https://shopnow-chowa-somiti-server.vercel.app/user-deposit", depositData);
       alert("Deposit saved successfully!");
       console.log(res.data)
       setAmount("");
