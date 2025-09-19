@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   const fetchDepositData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/user-deposit");
+      const res = await axios.get("https://amazing-cannoli-b3379f.netlify.app/user-deposit");
       setMemberData(res.data);
     } catch (err) {
       console.log(err);
